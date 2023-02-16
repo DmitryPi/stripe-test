@@ -265,6 +265,7 @@ SOCIALACCOUNT_ADAPTER = "shop.users.adapters.SocialAccountAdapter"
 # https://django-allauth.readthedocs.io/en/latest/forms.html
 SOCIALACCOUNT_FORMS = {"signup": "shop.users.forms.UserSocialSignupForm"}
 
-
-# Your stuff...
+# Stripe
 # ------------------------------------------------------------------------------
+STRIPE_PUBLIC_KEY = env("STRIPE_PUBLIC_KEY")
+STRIPE_SECRET_KEY = env("STRIPE_PUBLIC_KEY")
