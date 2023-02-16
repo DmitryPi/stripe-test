@@ -71,7 +71,6 @@ THIRD_PARTY_APPS = [
 
 LOCAL_APPS = [
     "shop.users",
-    "shop.core",
     "shop.products",
     "shop.payments",
 ]
