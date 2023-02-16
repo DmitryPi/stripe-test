@@ -7,7 +7,23 @@
     <div class="card-body">
       <h1 class="card-title">{{item.name}}</h5>
       <p class="card-text">{{item.description}}</p>
-      <button id="buy-button" class="btn btn-primary">Buy</a>
+      <form method="post">
+          {% csrf_token %}
+          <script
+              src="https://checkout.stripe.com/checkout.js" class="stripe-button"
+              data-key="{{ stripe_public_key }}"
+              data-amount={{ item.converted_form_price }}
+              data-name="Payment"
+              data-description="{{item.description}}"
+              data-image="https://stripe.com/img/documentation/checkout/marketplace.png"
+              data-email=""
+              data-locale="auto"
+              data-currency="rub"
+              data-label="Pay with card"
+              data-panel-label="Pay"
+              data-zip-code="true">
+          </script>
+      </form>
     </div>
   </div>
 </div>

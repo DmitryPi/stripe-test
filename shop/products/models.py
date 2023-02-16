@@ -19,3 +19,7 @@ class Item(models.Model):
 
     def get_absolute_url(self):
         return reverse("products:item_detail", kwargs={"pk": self.pk})
+
+    @property
+    def converted_form_price(self):
+        return self.price * 100
