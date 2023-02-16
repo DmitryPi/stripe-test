@@ -21,5 +21,6 @@ class Item(models.Model):
         return reverse("products:item_detail", kwargs={"pk": self.pk})
 
     @property
-    def converted_form_price(self):
-        return self.price * 100
+    def price_in_cents(self):
+        """Return price in cents, used by stripe payment form"""
+        return int(self.price * 100)

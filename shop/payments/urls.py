@@ -1,12 +1,12 @@
 from django.urls import path
 
 from .apps import PaymentsConfig
-from .views import PaymentSuccessView, create_checkout_session
+from .views import PaymentCheckoutView, PaymentSuccessView
 
 app_name = PaymentsConfig.verbose_name
 
 
 urlpatterns = [
-    path("payment-checkout/", create_checkout_session, name="checkout"),
+    path("buy/<int:pk>", PaymentCheckoutView.as_view(), name="checkout"),
     path("payment-success/", PaymentSuccessView.as_view(), name="success"),
 ]
