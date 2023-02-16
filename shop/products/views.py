@@ -2,12 +2,16 @@ import stripe
 from django.conf import settings
 from django.http import HttpResponseRedirect
 from django.urls import reverse
-from django.views.generic import DetailView, ListView
+from django.views.generic import DetailView, ListView, TemplateView
 
 from .models import Item
 
 stripe.api_key = settings.STRIPE_SECRET_KEY
 STRIPE_PUBLIC_KEY = settings.STRIPE_PUBLIC_KEY
+
+
+class PaymentSuccessView(TemplateView):
+    template_name = "products/payment_success.html"
 
 
 class ItemListView(ListView):
@@ -21,12 +25,16 @@ class ItemDetailView(DetailView):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        context["stripe_public_key"] = STRIPE_PUBLIC_KEY
+        context["STRIPE_PUBLIC_KEY"] = STRIPE_PUBLIC_KEY
         return context
 
     def post(self, request, *args, **kwargs):
+        """
+        4242 4242 4242 4242
+        112025
+        000
+        """
         item = self.get_object()
-        amount = item.price
 
         # Get the credit card details submitted by the form
         token = request.POST["stripeToken"]
@@ -35,7 +43,7 @@ class ItemDetailView(DetailView):
         # Create a charge: this will charge the user's card
         try:
             charge = stripe.Charge.create(
-                amount=int(amount * 100),
+                amount=int(item.converted_form_price),
                 currency="usd",
                 source=token,
                 description=f"Charge for {email}",
@@ -46,4 +54,4 @@ class ItemDetailView(DetailView):
             print(e)
 
         # Redirect to the success page
-        return HttpResponseRedirect(reverse("payment_success"))
+        return HttpResponseRedirect(reverse("products:payment_success"))
