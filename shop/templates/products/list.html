@@ -1,7 +1,7 @@
 {% extends "base.html" %}
 
 {% block content %}
-<h1>List page</h1>
+<h1>Items</h1>
 {% for item in item_list %}
     <a href="{{item.get_absolute_url}}">{{item.name}}</a>
 {% endfor %}
