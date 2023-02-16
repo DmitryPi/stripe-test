@@ -1,4 +1,4 @@
-from random import randrange
+import random
 
 from factory import Faker
 from factory.django import DjangoModelFactory
@@ -11,6 +11,6 @@ class ItemFactory(DjangoModelFactory):
     class Meta:
         model = Item
 
-    name = Faker("sentence", nb_words=randrange(1, 4))
+    name = Faker("sentence", nb_words=random.randrange(1, 4))
     description = Faker("text")
-    price = FuzzyDecimal(50, 5000)
+    price = FuzzyDecimal(50, 5000, precision=0)

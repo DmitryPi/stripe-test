@@ -2,3 +2,7 @@
 # ------------------------------------------------------------------------------
 USE_DOCKER=yes
 IPYTHONDIR=/app/.ipython
+
+# Stripe
+STRIPE_PUBLIC_KEY=pk_test_rblrQhAfs95Ry83l7rhF6Kcq
+STRIPE_SECRET_KEY=sk_test_m8YVGgo5DFwCd0zk68tsZwAa

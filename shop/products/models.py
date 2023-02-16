@@ -13,6 +13,7 @@ class Item(models.Model):
     class Meta:
         verbose_name = _("Item")
         verbose_name_plural = _("Items")
+        ordering = ["-created_at"]
 
     def __str__(self):
         return f"{self.pk} : {self.name} : {self.price}"
