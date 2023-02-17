@@ -22,7 +22,7 @@ class PaymentCheckoutView(View):
     def post(self, request, **kwargs):
         currency = get_selected_currency(request.body)
         item = get_object_or_404(Item, **kwargs)
-        item_price = convert_price_by_currency(currency, item.price)
+        item_price = convert_price_by_currency(currency, item.price, item.currency)
         item_price_in_cents = convert_price_to_cents(item_price)
         item_currency = convert_currency_symbol_to_stripe_type(currency)
         # build urls

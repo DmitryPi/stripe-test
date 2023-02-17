@@ -24,13 +24,19 @@ def convert_currency_symbol_to_stripe_type(symbol: str) -> str:
             return "rub"
 
 
-def convert_price_by_currency(symbol: str, price: Decimal) -> Decimal:
+def convert_price_by_currency(
+    symbol: str, item_price: Decimal, item_currency: str
+) -> Decimal:
     """Convert price by given currency symbol, according to conversion_rates"""
-    conversion_rates = {
-        Item.Currency.RUB: price,
-        Item.Currency.USD: price / 70,
-    }
-    return conversion_rates.get(symbol, price)
+    conversion_rate = 70
+    if symbol == item_currency:
+        return item_price
+    elif symbol == Item.Currency.RUB:
+        return item_price * conversion_rate
+    elif symbol == Item.Currency.USD:
+        return item_price / conversion_rate
+    else:
+        return item_price
 
 
 def convert_price_to_cents(price: Decimal) -> int:
