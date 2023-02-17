@@ -5,28 +5,14 @@ entryPoints:
   web:
     # http
     address: ":80"
-    http:
-      # https://docs.traefik.io/routing/entrypoints/#entrypoint
-      redirections:
-        entryPoint:
-          to: web-secure
-
-  web-secure:
-    # https
-    address: ":443"
 
 http:
   routers:
     web-secure-router:
       rule: "Host(`ovz2.j98106260.vpljm.vps.myjino.ru`) || Host(`www.ovz2.j98106260.vpljm.vps.myjino.ru`)"
-      entryPoints:
-        - web-secure
       middlewares:
         - csrf
       service: django
-      tls:
-        # https://docs.traefik.io/master/routing/routers/#certresolver
-        certResolver: letsencrypt
 
   middlewares:
     csrf:
