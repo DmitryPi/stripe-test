@@ -15,7 +15,7 @@ stripe.api_key = settings.STRIPE_SECRET_KEY
 class PaymentCheckoutView(View):
     def post(self, request, **kwargs):
         item = get_object_or_404(Item, **kwargs)
-        item_currency = "rub"
+        selected_currency = "rub"
         success_url = request.build_absolute_uri(reverse("payments:success"))
         previous_url = request.META.get("HTTP_REFERER")
         # build session
@@ -24,7 +24,7 @@ class PaymentCheckoutView(View):
             line_items=[
                 {
                     "price_data": {
-                        "currency": item_currency,
+                        "currency": selected_currency,
                         "product_data": {
                             "name": item.name,
                         },
