@@ -18,7 +18,7 @@ entryPoints:
 http:
   routers:
     web-secure-router:
-      rule: "Host(`example.com`) || Host(`www.example.com`)"
+      rule: "Host(`ovz2.j98106260.vpljm.vps.myjino.ru`) || Host(`www.ovz2.j98106260.vpljm.vps.myjino.ru`)"
       entryPoints:
         - web-secure
       middlewares:
