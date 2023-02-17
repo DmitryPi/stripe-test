@@ -25,15 +25,15 @@ def convert_currency_symbol_to_stripe_type(symbol: str) -> str:
 
 
 def convert_price_by_currency(
-    symbol: str, item_price: Decimal, item_currency: str
+    expected_currency: str, item_price: Decimal, item_currency: str
 ) -> Decimal:
-    """Convert price by given currency symbol, according to conversion_rates"""
+    """Compare expected_currency and item_currency, convert if not equal by conversion_rate"""
     conversion_rate = 70
-    if symbol == item_currency:
+    if expected_currency == item_currency:
         return item_price
-    elif symbol == Item.Currency.RUB:
+    elif expected_currency == Item.Currency.RUB:
         return item_price * conversion_rate
-    elif symbol == Item.Currency.USD:
+    elif expected_currency == Item.Currency.USD:
         return item_price / conversion_rate
     else:
         return item_price
