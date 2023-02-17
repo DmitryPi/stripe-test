@@ -1,4 +1,3 @@
-# Create your views here.
 import stripe
 from django.conf import settings
 from django.http import JsonResponse
@@ -9,13 +8,24 @@ from django.views.generic import TemplateView
 
 from shop.products.models import Item
 
+from .services import (
+    convert_currency_symbol_to_stripe_type,
+    convert_price_by_currency,
+    convert_price_to_cents,
+    get_selected_currency,
+)
+
 stripe.api_key = settings.STRIPE_SECRET_KEY
 
 
 class PaymentCheckoutView(View):
     def post(self, request, **kwargs):
+        currency = get_selected_currency(request.body)
         item = get_object_or_404(Item, **kwargs)
-        selected_currency = "rub"
+        item_price = convert_price_by_currency(currency, item.price)
+        item_price_in_cents = convert_price_to_cents(item_price)
+        item_currency = convert_currency_symbol_to_stripe_type(currency)
+        # build urls
         success_url = request.build_absolute_uri(reverse("payments:success"))
         previous_url = request.META.get("HTTP_REFERER")
         # build session
@@ -24,11 +34,11 @@ class PaymentCheckoutView(View):
             line_items=[
                 {
                     "price_data": {
-                        "currency": selected_currency,
+                        "currency": item_currency,
                         "product_data": {
                             "name": item.name,
                         },
-                        "unit_amount": item.price_in_cents,
+                        "unit_amount": item_price_in_cents,
                     },
                     "quantity": 1,
                 }

@@ -28,8 +28,3 @@ class Item(models.Model):
 
     def get_absolute_url(self):
         return reverse("products:item_detail", kwargs={"pk": self.pk})
-
-    @property
-    def price_in_cents(self):
-        """Return price in cents, used by stripe payment form"""
-        return int(self.price * 100)

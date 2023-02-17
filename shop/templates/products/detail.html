@@ -14,7 +14,14 @@
     <div class="card-body">
       <h1 class="card-title">{{item.name}}</h5>
       <p class="card-text">{{item.description}}</p>
-      <button type="button" class="btn btn-lg btn-primary" id="checkout-button">Buy</button>
+      <div class="card-row-group" style="display: flex; flex-direction: row; gap: 1rem">
+        <button type="button" class="btn btn-lg btn-primary" id="checkout-button" style="flex: 0.8">Buy</button>
+        <select class="custom-select" id="checkout-currency" style="flex: 0.2">
+          {% for currency in item.Currency %}
+            <option value="{{currency}}">{{currency}}</option>
+          {% endfor %}
+        </select>
+      </div>
     </div>
   </div>
 </div>
@@ -30,14 +37,17 @@
   const checkoutButton = document.getElementById('checkout-button');
 
   checkoutButton.addEventListener('click', function() {
-    // Create a new Checkout Session using the server-side endpoint you
-    // created in step 3.
+    const currencySelectValue = document.getElementById('checkout-currency').value;
+    console.log(currencySelectValue)
     fetch("{% url 'payments:checkout' pk=item.pk %}", {
           method: 'POST',
           headers: {
             "Content-Type": "application/json",
             "X-CSRFToken": csrfToken
-          }
+          },
+          body: JSON.stringify({
+            currency: currencySelectValue
+          })
         })
         .then(function(response) {
           return response.json();

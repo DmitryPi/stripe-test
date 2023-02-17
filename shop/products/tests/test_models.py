@@ -45,7 +45,3 @@ class ItemTests(TestCase):
         item = ItemFactory(**self.item_data)
         url = reverse("products:item_detail", kwargs={"pk": item.pk})
         self.assertEqual(item.get_absolute_url(), url)
-
-    def test_price_in_cents(self):
-        item = ItemFactory(**self.item_data)
-        self.assertEqual(int(item.price * 100), item.price_in_cents)

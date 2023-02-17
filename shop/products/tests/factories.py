@@ -14,3 +14,4 @@ class ItemFactory(DjangoModelFactory):
     name = Faker("sentence", nb_words=random.randrange(1, 4))
     description = Faker("text")
     price = FuzzyDecimal(50, 5000, precision=0)
+    currency = Item.Currency.RUB
