@@ -1,6 +1,9 @@
 import json
 from decimal import Decimal
 
+import stripe
+from django.conf import settings
+
 from shop.products.models import Item
 
 
@@ -41,3 +44,35 @@ def convert_price_by_currency(
 
 def convert_price_to_cents(price: Decimal) -> int:
     return int(price * 100)
+
+
+def create_stripe_session(
+    *,
+    product_name: str,
+    quantity: int = 1,
+    currency: str,
+    price_x100: int,
+    success_url: str,
+    cancel_url: str,
+    methods: list[str] = ["card"],
+) -> stripe.checkout.Session:
+    stripe.api_key = settings.STRIPE_SECRET_KEY
+    session = stripe.checkout.Session.create(
+        payment_method_types=methods,
+        line_items=[
+            {
+                "price_data": {
+                    "currency": currency,
+                    "product_data": {
+                        "name": product_name,
+                    },
+                    "unit_amount": price_x100,
+                },
+                "quantity": quantity,
+            }
+        ],
+        mode="payment",
+        success_url=success_url,
+        cancel_url=cancel_url,
+    )
+    return session

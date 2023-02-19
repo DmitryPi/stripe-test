@@ -12,6 +12,7 @@ from .services import (
     convert_currency_symbol_to_stripe_type,
     convert_price_by_currency,
     convert_price_to_cents,
+    create_stripe_session,
     get_selected_currency,
 )
 
@@ -28,22 +29,11 @@ class PaymentCheckoutView(View):
         # build urls
         success_url = request.build_absolute_uri(reverse("payments:success"))
         previous_url = request.META.get("HTTP_REFERER")
-        # build session
-        session = stripe.checkout.Session.create(
-            payment_method_types=["card"],
-            line_items=[
-                {
-                    "price_data": {
-                        "currency": item_currency,
-                        "product_data": {
-                            "name": item.name,
-                        },
-                        "unit_amount": item_price_in_cents,
-                    },
-                    "quantity": 1,
-                }
-            ],
-            mode="payment",
+        # create session
+        session = create_stripe_session(
+            product_name=item.name,
+            currency=item_currency,
+            price_x100=item_price_in_cents,
             success_url=success_url,
             cancel_url=previous_url,
         )

@@ -8,6 +8,7 @@ from ..services import (
     convert_currency_symbol_to_stripe_type,
     convert_price_by_currency,
     convert_price_to_cents,
+    create_stripe_session,
     get_selected_currency,
 )
 
@@ -61,3 +62,20 @@ class ServicesTests(TestCase):
     def test_convert_price_to_cents(self):
         item = ItemFactory(currency=Item.Currency.RUB)
         self.assertEqual(int(item.price * 100), convert_price_to_cents(item.price))
+
+    def test_create_stripe_session(self):
+        item = ItemFactory(currency=Item.Currency.RUB)
+        item_currency = "rub"
+        item_price_in_cents = convert_price_to_cents(item.price)
+        success_url = "http://localhost:8000/item/808/"
+        cancel_url = "http://localhost:8000/item/808/"
+        session = create_stripe_session(
+            product_name=item.name,
+            quantity=5,
+            currency=item_currency,
+            price_x100=item_price_in_cents,
+            success_url=success_url,
+            cancel_url=cancel_url,
+            methods=["card"],
+        )
+        assert session.id
