@@ -46,7 +46,7 @@ def convert_price_to_cents(price: Decimal) -> int:
     return int(price * 100)
 
 
-def create_stripe_session(
+def create_stripe_checkout_session(
     *,
     product_name: str,
     quantity: int = 1,

@@ -8,7 +8,7 @@ from ..services import (
     convert_currency_symbol_to_stripe_type,
     convert_price_by_currency,
     convert_price_to_cents,
-    create_stripe_session,
+    create_stripe_checkout_session,
     get_selected_currency,
 )
 
@@ -69,7 +69,7 @@ class ServicesTests(TestCase):
         item_price_in_cents = convert_price_to_cents(item.price)
         success_url = "http://localhost:8000/item/808/"
         cancel_url = "http://localhost:8000/item/808/"
-        session = create_stripe_session(
+        session = create_stripe_checkout_session(
             product_name=item.name,
             quantity=5,
             currency=item_currency,

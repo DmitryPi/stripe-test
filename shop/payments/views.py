@@ -10,7 +10,7 @@ from .services import (
     convert_currency_symbol_to_stripe_type,
     convert_price_by_currency,
     convert_price_to_cents,
-    create_stripe_session,
+    create_stripe_checkout_session,
     get_selected_currency,
 )
 
@@ -26,7 +26,7 @@ class PaymentCheckoutView(View):
         success_url = request.build_absolute_uri(reverse("payments:success"))
         previous_url = request.META.get("HTTP_REFERER")
         # create session
-        session = create_stripe_session(
+        session = create_stripe_checkout_session(
             product_name=item.name,
             currency=item_currency,
             price_x100=item_price_in_cents,
