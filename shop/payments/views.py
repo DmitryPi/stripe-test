@@ -1,5 +1,3 @@
-import stripe
-from django.conf import settings
 from django.http import JsonResponse
 from django.shortcuts import get_object_or_404
 from django.urls import reverse
@@ -15,8 +13,6 @@ from .services import (
     create_stripe_session,
     get_selected_currency,
 )
-
-stripe.api_key = settings.STRIPE_SECRET_KEY
 
 
 class PaymentCheckoutView(View):
